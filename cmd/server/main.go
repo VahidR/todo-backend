@@ -9,7 +9,9 @@ import (
 	"github.com/VahidR/todo-backend/internal/todo"
 )
 
+// The main function initializes the application components and starts the server.
 func main() {
+	// Load configuration and initialize database connection
 	cfg := config.Load()
 	db := database.NewMySQL(cfg.DBDSN)
 
@@ -18,6 +20,7 @@ func main() {
 	todoService := todo.NewService(todoRepo)
 	todoHandler := todo.NewHandler(todoService)
 
+	// Initialize and start the router
 	r := router.New(todoHandler)
 
 	log.Printf("Starting server on :%s (%s)", cfg.Port, cfg.Env)
