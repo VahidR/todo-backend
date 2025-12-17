@@ -445,7 +445,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Related Documents
 
 - [Go Project Layout](https://github.com/golang-standards/project-layout)
-- [Gin Documentation](https://gin-gonic.com/docs/)
+- [Gin Documentation](https://gin-gonic.com/en/docs/)
 - [GORM Documentation](https://gorm.io/docs/)
 
 ### Changelog
