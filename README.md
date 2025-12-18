@@ -92,6 +92,7 @@ todo-backend/
 │       ├── repository.go     # Data access layer
 │       └── service.go        # Business logic layer
 ├── bin/                      # Compiled binaries
+├── .env.example              # Environment variables template
 ├── Makefile                  # Build automation
 ├── go.mod                    # Go module definition
 └── go.sum                    # Dependency checksums
@@ -117,9 +118,8 @@ git clone https://github.com/VahidR/todo-backend.git
 cd todo-backend
 
 # 2. Set up environment variables
-export DB_DSN="user:password@tcp(localhost:3306)/todo_db?parseTime=true&charset=utf8mb4&loc=Local"
-export PORT="8080"
-export ENV="development"
+cp .env.example .env
+# Edit .env with your database credentials
 
 # 3. Download dependencies
 make deps
@@ -130,16 +130,26 @@ make run
 
 ### Environment Variables
 
+Configuration is loaded from a `.env` file in the project root. Copy `.env.example` to `.env` and customize:
+
+```bash
+cp .env.example .env
+```
+
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `DB_DSN` | ✅ | - | MySQL connection string |
 | `PORT` | ❌ | `8080` | Server port |
 | `ENV` | ❌ | `development` | Environment (`development`, `production`) |
 
-**Example DB_DSN format:**
+**Example `.env` file:**
+```env
+PORT=8080
+ENV=development
+DB_DSN=user:password@tcp(localhost:3306)/todo_db?parseTime=true&charset=utf8mb4&loc=Local
 ```
-user:password@tcp(localhost:3306)/todo_db?parseTime=true&charset=utf8mb4&loc=Local
-```
+
+> **Note:** The `.env` file is ignored by git to keep your credentials safe. Environment variables set in the shell will override values from `.env`.
 
 ---
 
