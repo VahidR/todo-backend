@@ -14,11 +14,13 @@ type Handler struct {
 }
 
 // NewHandler creates a new Handler with the given Service.
+// HINT: A 'constructor' function for the Handler struct.
 func NewHandler(svc Service) *Handler {
 	return &Handler{svc: svc}
 }
 
 // RegisterRoutes registers /api/todos routes on a RouterGroup.
+// HINT: This is where the routes are defined and attached to the handler methods.
 func (h *Handler) RegisterRoutes(rg *gin.RouterGroup) {
 	rg.GET("/", h.ListTodos)
 	rg.GET("/:id", h.GetTodo)
@@ -28,7 +30,11 @@ func (h *Handler) RegisterRoutes(rg *gin.RouterGroup) {
 }
 
 // ListTodos handles GET /api/todos
+// HINT: handler method accept *gin.Context as parameter, NO separate request and response structs. INTERESTING
+// HINT: Contex carries request and response info, path params, query params, body, headers, etc. VERY IMPORTANT CONCEPT
+// HINT: Handlers accept 'gin.Context'
 func (h *Handler) ListTodos(c *gin.Context) {
+	// HINT: Pass the 'Context of Request scope' to the Service layer
 	todos, err := h.svc.ListTodos(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch todos"})
@@ -39,8 +45,11 @@ func (h *Handler) ListTodos(c *gin.Context) {
 
 // GetTodo handles GET /api/todos/:id
 func (h *Handler) GetTodo(c *gin.Context) {
+	// HINT: This is how we get Path Parameters from the request context
 	id, err := parseIDParam(c.Param("id"))
 	if err != nil {
+		// HINT: When we return the response, we also use the context as well. It carries out the request and response
+		// HINT: gin.H is just a shortcut for map[string]interface{}
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return
 	}
@@ -59,6 +68,7 @@ func (h *Handler) GetTodo(c *gin.Context) {
 }
 
 // CreateTodo handles POST /api/todos
+// HINT: Define a request struct to bind the incoming JSON body. It's like Request DTO or Records in JAVA
 type createTodoRequest struct {
 	Title string `json:"title" binding:"required"`
 }
@@ -66,6 +76,7 @@ type createTodoRequest struct {
 // CreateTodo handles POST /api/todos
 func (h *Handler) CreateTodo(c *gin.Context) {
 	var req createTodoRequest
+	// HINT: ShouldBindJSON binds the JSON body to the struct and validates it based on the 'binding' tags
 	if err := c.ShouldBindJSON(&req); err != nil || req.Title == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "title is required"})
 		return

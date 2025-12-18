@@ -6,6 +6,7 @@ import (
 )
 
 // Predefined errors.
+// HINT: Define domain-specific errors here.
 var (
 	ErrTodoNotFound = errors.New("todo not found")
 	ErrInvalidInput = errors.New("invalid input")
@@ -32,16 +33,19 @@ type Service interface {
 }
 
 // service is the implementation of the Service interface.
+// HINT: This is how we 'inject' the repository to the service struct
 type service struct {
 	repo Repository
 }
 
 // NewService creates a new Service with the given Repository.
+// HINT: A 'constructor' function for the Service struct.
 func NewService(repo Repository) Service {
 	return &service{repo: repo}
 }
 
 // ListTodos retrieves all todo items.
+// HINT: Services accept 'context.Context'
 func (s *service) ListTodos(ctx context.Context) ([]Todo, error) {
 	// ctx is here if later you want to pass it to repo/db
 	return s.repo.FindAll()
@@ -60,13 +64,13 @@ func (s *service) GetTodo(ctx context.Context, id uint) (*Todo, error) {
 }
 
 // CreateTodo creates a new todo item.
-func (s *service) CreateTodo(ctx context.Context, in CreateTodoInput) (*Todo, error) {
-	if in.Title == "" {
+func (s *service) CreateTodo(ctx context.Context, todoInput CreateTodoInput) (*Todo, error) {
+	if todoInput.Title == "" {
 		return nil, ErrInvalidInput
 	}
 
 	todo := &Todo{
-		Title: in.Title,
+		Title: todoInput.Title,
 	}
 	if err := s.repo.Create(todo); err != nil {
 		return nil, err

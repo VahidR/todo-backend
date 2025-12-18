@@ -21,7 +21,7 @@ LDFLAGS := -ldflags "-s -w"
 
 # Default target
 .PHONY: all
-all: build
+all: clean build
 
 # Build the application
 .PHONY: build

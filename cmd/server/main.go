@@ -21,8 +21,8 @@ func main() {
 
 	// 3. Wiring: repository -> service -> handler -> router
 	// HINT: inject every layer in the main just like below.
-	todoRepo := todo.NewRepository(db)
-	todoService := todo.NewService(todoRepo)
+	todoRepository := todo.NewRepository(db)
+	todoService := todo.NewService(todoRepository)
 	todoHandler := todo.NewHandler(todoService)
 
 	// 4. Initialize and start the router
