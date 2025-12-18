@@ -25,10 +25,10 @@ func New(todoHandler *todo.Handler) *gin.Engine {
 	router.Use(cors.New(cors.Config{
 		// this should be read from the ENV in a real-world application
 		AllowOrigins:     []string{"http://localhost:4321"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
 
