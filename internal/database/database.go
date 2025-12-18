@@ -17,6 +17,7 @@ func NewMySQL(dsn string) *gorm.DB {
 	}
 
 	// Auto-migrate schema
+	// This will create/update the "todos" table based on the Todo model.
 	if err := db.AutoMigrate(&todo.Todo{}); err != nil {
 		log.Fatalf("failed to migrate DB: %v", err)
 	}
